@@ -25,7 +25,7 @@ def on_message(client, userdata, message):
         if isinstance(data, dict):
                 if data["fin"] == FIN or read_all_messages == True:
                     print(f"Received Message: {data}")
-                    if write_message_to_postgres == True:
+                    if write_to_postgres == True:
                         write_message_to_postgres(data)
     except JSONDecodeError:
         print("Error while decoding JSON")
@@ -35,7 +35,8 @@ def on_message(client, userdata, message):
 
 # Write message to postgres database
 def write_message_to_postgres(data):
-    cursor.execute(f"INSERT INTO staging.kfzzuordnung (payload, erstellt_am, quelle) VALUES ('{str(data)}', '{data['zeit']}', 'MQTT');")
+    data_string = str(data).replace("'", "\"")
+    cursor.execute(f"INSERT INTO staging.messung (payload, erstellt_am, quelle) VALUES ('{data_string}', '{data['zeit']}', 'MQTT');")
 
 
 # MAIN
@@ -43,8 +44,8 @@ if __name__ == '__main__':
     # Configure parameters
     broker_address="broker.hivemq.com"
     FIN = "WPOSJYDU7SDO692GB"
-    read_all_messages = True
-    write_messages_to_postgres = True
+    read_all_messages = False
+    write_to_postgres = True
 
     # Connect to MQTT client and subscribe to "DataMgmt/FIN"
     client = mqtt.Client("inf20026_subscriber", clean_session=False) #use your own unique ID
@@ -60,6 +61,6 @@ if __name__ == '__main__':
 
     # Close connections to MQTT client and postgres
     client.disconnect()
-    #cursor.close()
-    #postgres.close()
+    cursor.close()
+    postgres.close()
     print("All connections closed successfully.")
