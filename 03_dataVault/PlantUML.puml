@@ -1,0 +1,70 @@
+@startuml Data Warehouse
+entity "H_Kunde" as h01 #lightblue {
+  *kunde_id : integer <<generated>>
+}
+entity "H_Fahrzeug" as h02 #lightblue {
+  *fin : char <<unique>>
+}
+
+entity "L_Owner" as l01 #tomato {
+  *owner_id : char <<generated>>
+  --
+  *kunde_id : integer <<FK>>
+  *fin : char <<FK>>
+}
+
+entity "S_Hersteller" as s01 #gold {
+  *hersteller_code : char <<unique>>
+  --
+  *hersteller : varchar
+  erstellt_am : datetime
+  *quelle : varchar
+}
+entity "S_KFZZuordnung" as s02 #gold {
+  *fin : char <<FK>>
+  *kfz_kennzeichen : varchar <<unique>>
+  --
+  erstellt_am : datetime
+  *quelle : varchar
+}
+entity "S_Messung" as s03 #gold {
+  *messung_id : bigint <<generated>>
+  *fin : char <<unique>>
+  --
+  *zeit : datetime
+  *geschwindigkeit : integer
+  *ort : int <<FK>>
+  erstellt_am : datetime
+  *quelle : varchar
+}
+entity "S_Kundendaten" as s04 #gold {
+  *kunde_id : integer <<generated>>
+  --
+  *vorname : varchar
+  *nachname : varchar
+  anrede : varchar
+  *geschlecht : varchar
+  geburtsdatum : date
+  *wohnort : integer <<FK>>
+  erstellt_am : datetime
+  *quelle : varchar
+}
+entity "S_Fahrzeugdaten" as s05 #gold {
+  *fin : char <<FK>>
+  --
+  hersteller_code : char <<FK>>
+  *baujahr : integer
+  *modell : char
+  erstellt_am : datetime
+  *quelle : varchar
+}
+
+h01 ||..o{ l01
+h02 ||..o{ l01
+h02 }o..|| s01
+h02 }o..|| s02
+h02 }o..o{ s03
+h01 ||..|| s04
+h02 ||..|| s05
+
+@enduml
