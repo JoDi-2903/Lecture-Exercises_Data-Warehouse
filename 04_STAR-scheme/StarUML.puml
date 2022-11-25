@@ -1,0 +1,47 @@
+@startuml STAR-UML
+entity "Measurement" as f01 #lightgreen {
+  *ort_id : int <<FK>>
+  *kunde_id : integer <<FK>>
+  *car_id : integer <<FK>>
+  *geschwindigkeit : integer
+  * quelle : varchar
+  *zeit_messung_erstellt : datetime
+  zeit_messung_erhalten : datetime
+}
+
+entity "Location Dimension" as d01 #lightgray {
+  *ort_id : int <<generated>>
+  --
+  *ort_name : varchar
+  *land : varchar
+  erstellt_am : datetime
+  *quelle : varchar
+}
+entity "Customer Dimension" as d02 #lightgray {
+  *kunde_id : integer <<generated>>
+  --
+  *vorname : varchar
+  *nachname : varchar
+  anrede : varchar
+  *geschlecht : varchar
+  geburtsdatum : date
+  *ort_name : varchar
+  *land : varchar
+  erstellt_am : datetime
+  *quelle : varchar
+}
+entity "Car Dimension" as d03 #lightgray {
+  *car_id : integer <<generated>>
+  --
+  *fin : char <<unique>>
+  *hersteller : varchar
+  *baujahr : integer
+  *modell : char
+  erstellt_am : datetime
+  *quelle : varchar
+}
+
+d01 }o.. f01
+d02 }o.. f01
+d03 }o.. f01
+@enduml
