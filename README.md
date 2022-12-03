@@ -20,7 +20,6 @@ Components:
 ![Screenshot 2022-12-03 132229](https://user-images.githubusercontent.com/88625959/205440775-fc2cfa62-cea6-462f-a788-ae575273dcb4.png)
 
 <b>Figure 1:</b> <i>Architecture case study</i>
-<br/><br/>
 
 <h2>Credits</h2>
 
